@@ -25,8 +25,8 @@ fn part2(policies: Vec<PasswordPolicy>) -> u16 {
   let mut valid = 0;
 
   for policy in policies {
-    let min_result = char_at(&policy.password, policy.min as usize) != policy.letter;
-    let max_result = char_at(&policy.password, policy.max as usize) != policy.letter;
+    let min_result = char_at(&policy.password, policy.min as usize) == policy.letter;
+    let max_result = char_at(&policy.password, policy.max as usize) == policy.letter;
 
     if min_result != max_result {
       valid += 1;
