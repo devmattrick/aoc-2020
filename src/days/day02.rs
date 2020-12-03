@@ -84,14 +84,14 @@ mod tests {
   }
 
   #[test]
-  fn test_part1() {
+  fn test_day02_part1() {
     let answer = part1(read_input());
 
     println!("Part 1 Answer: {}", answer);
   }
 
   #[test]
-  fn test_part2() {
+  fn test_day02_part2() {
     let answer = part2(read_input());
 
     println!("Part 2 Answer: {}", answer);
