@@ -23,10 +23,6 @@ impl BoolWrapGrid {
     self.data.borrow_mut().insert(self.index(x, y), value);
   }
 
-  fn size(&self) -> usize {
-    self.width * self.height
-  }
-
   fn index(&self, x: usize, y: usize) -> usize {
     (x % self.width) + self.width * (y % self.height)
   }
