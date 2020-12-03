@@ -59,12 +59,14 @@ mod tests {
 
       let min = parse_number(caps.get(1));
       let max = parse_number(caps.get(2));
+      let letter = parse_char(caps.get(3));
+      let password = parse_string(caps.get(4));
 
       PasswordPolicy {
         min,
         max,
-        letter: parse_char(caps.get(3)),
-        password: parse_string(caps.get(4)),
+        letter,
+        password,
       }
     }).collect()
   }
@@ -83,11 +85,15 @@ mod tests {
 
   #[test]
   fn test_part1() {
-    println!("Part 1 Answer: {}", part1(read_input()));
+    let answer = part1(read_input());
+
+    println!("Part 1 Answer: {}", answer);
   }
 
   #[test]
   fn test_part2() {
-    println!("Part 2 Answer: {}", part2(read_input()));
+    let answer = part2(read_input());
+
+    println!("Part 2 Answer: {}", answer);
   }
 }

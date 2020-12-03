@@ -1,8 +1,8 @@
 const TARGET: u32 = 2020;
 
-fn part1(input: &Vec<u32>) -> u32 {
-    for x in input {
-        for y in input {
+fn part1(input: Vec<u32>) -> u32 {
+    for x in &input {
+        for y in &input {
             if x + y == TARGET {
                 return x * y;
             }
@@ -12,10 +12,10 @@ fn part1(input: &Vec<u32>) -> u32 {
     return 0;
 }
 
-fn part2(input: &Vec<u32>) -> u32 {
-    for x in input {
-        for y in input {
-            for z in input {
+fn part2(input: Vec<u32>) -> u32 {
+    for x in &input {
+        for y in &input {
+            for z in &input {
                 if x + y + z == TARGET {
                     return x * y * z;
                 }
@@ -40,11 +40,15 @@ mod tests {
 
   #[test]
   fn test_part1() {
-    println!("Part 1 answer: {}", part1(&read_input()));
+    let answer = part1(read_input());
+
+    println!("Part 1 Answer: {}", answer);
   }
 
   #[test]
   fn test_part2() {
-    println!("Part 2 answer: {}", part2(&read_input()));
+    let answer = part2(read_input());
+
+    println!("Part 2 Answer: {}", answer);
   }
 }
