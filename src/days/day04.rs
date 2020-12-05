@@ -1,11 +1,15 @@
 use std::fmt::Debug;
-use regex::Regex;
+use regex::{Regex, CaptureMatches};
 
-fn part1(input: Vec<String>) -> u16 {
+fn get_captures<'a>(line: &'a String) -> CaptureMatches<'a, 'a> {
   lazy_static! {
     static ref RE: Regex = Regex::new(r"(\w+):(.+?)\s").expect("Failed to initialize regex");
   }
 
+  RE.captures_iter(line)
+}
+
+fn part1(input: Vec<String>) -> u16 {
   let mut valid = 0;
 
   for line in input {
@@ -13,7 +17,7 @@ fn part1(input: Vec<String>) -> u16 {
     // of which fields exist for a given passport
     let mut fields = 0x0000_0000;
 
-    for cap in RE.captures_iter(&line) {
+    for cap in get_captures(&line) {
       let key = &cap[1];
 
       // Each field's existence is represented by a different bit
@@ -165,16 +169,12 @@ impl Passport {
 }
 
 fn part2 (input: Vec<String>) -> u16 {
-  lazy_static! {
-    static ref RE: Regex = Regex::new(r"(\w+):(.+?)\s").expect("Failed to initialize regex");
-  }
-
   let mut valid = 0;
 
   for line in input {
     let mut passport = Passport::new();
 
-    for cap in RE.captures_iter(&line) {
+    for cap in get_captures(&line) {
       let key = &cap[1];
       let value = &cap[2];
 
