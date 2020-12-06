@@ -1,4 +1,23 @@
+use aoc_runner_derive::aoc;
+use aoc_runner_derive::aoc_generator;
 use std::cmp::Ordering;
+
+#[aoc_generator(day5)]
+fn generator(input: &str) -> Vec<Vec<Direction>> {
+  let input = input.lines();
+
+  input.map(|line| {
+    line.chars().map(|c| {
+      match c {
+        'F' => Direction::Front,
+        'B' => Direction::Back,
+        'L' => Direction::Left,
+        'R' => Direction::Right,
+        _ => panic!("Unrecognized character: {}", c),
+      }
+    }).collect()
+  }).collect()
+}
 
 const MAX_Y: u8 = 127;
 const MAX_X: u8 = 7;
@@ -17,7 +36,7 @@ struct Seat {
 }
 
 impl Seat {
-  fn new(partitions: Vec<Direction>) -> Seat {
+  fn new(partitions: &[Direction]) -> Seat {
     let mut front = 0;
     let mut back = MAX_Y;
     let mut left = 0;
@@ -61,7 +80,8 @@ impl PartialEq for Seat {
   }
 }
 
-fn part1(input: Vec<Vec<Direction>>) -> u16 {
+#[aoc(day5, part1)]
+fn part1(input: &[Vec<Direction>]) -> u16 {
   let mut seats = Vec::new();
 
   for seat in input {
@@ -71,7 +91,8 @@ fn part1(input: Vec<Vec<Direction>>) -> u16 {
   seats.iter().max().expect("Unable to find max seat_id").seat_id()
 }
 
-fn part2(input: Vec<Vec<Direction>>) -> u16 {
+#[aoc(day5, part2)]
+fn part2(input: &[Vec<Direction>]) -> u16 {
   let mut seats = Vec::new();
 
   for seat in input {
@@ -88,39 +109,4 @@ fn part2(input: Vec<Vec<Direction>>) -> u16 {
   }).expect("Unable to find valid seat value").1 + 1
 }
 
-#[cfg(test)]
-mod tests {
-  use std::fs;
-  use super::*;
-
-  fn read_input() -> Vec<Vec<Direction>> {
-    let input = fs::read_to_string("input/05.txt").expect("Failed to read file");
-    let input = input.lines();
-
-    input.map(|line| {
-      line.chars().map(|c| {
-        match c {
-          'F' => Direction::Front,
-          'B' => Direction::Back,
-          'L' => Direction::Left,
-          'R' => Direction::Right,
-          _ => panic!("Unrecognized character: {}", c),
-        }
-      }).collect()
-    }).collect()
-  }
-
-  #[test]
-  fn test_day05_part1() {
-    let answer = part1(read_input());
-
-    println!("Part 1 Answer: {}", answer);
-  }
-
-  #[test]
-  fn test_day05_part2() {
-    let answer = part2(read_input());
-
-    println!("Part 2 Answer: {}", answer);
-  }
-}
+// TODO Write tests

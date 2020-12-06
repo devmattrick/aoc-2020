@@ -1,5 +1,35 @@
-use std::fmt::Debug;
+use aoc_runner_derive::aoc;
+use aoc_runner_derive::aoc_generator;
 use regex::{Regex, CaptureMatches};
+use std::fmt::Debug;
+
+use crate::aoc_test;
+
+#[aoc_generator(day4)]
+fn generator(input: &str) -> Vec<String> {
+  let input: Vec<&str> = input.lines().collect();
+
+
+  // Separate passport records into discrete entries
+  let mut passports = Vec::new();
+  let mut passport = String::new();
+  for line in input {
+    if line.is_empty() {
+      passports.push(passport);
+      passport = String::new();
+      continue;
+    }
+
+    passport.push_str(line);
+    // Add a space between lines. This will leave a trailing space in our strings, but makes the regex simpler
+    passport.push(' ');
+  }
+
+  // Push final passport
+  passports.push(passport);
+
+  passports
+}
 
 fn get_captures<'a>(line: &'a String) -> CaptureMatches<'a, 'a> {
   lazy_static! {
@@ -9,7 +39,8 @@ fn get_captures<'a>(line: &'a String) -> CaptureMatches<'a, 'a> {
   RE.captures_iter(line)
 }
 
-fn part1(input: Vec<String>) -> u16 {
+#[aoc(day4, part1)]
+fn part1(input: &[String]) -> u16 {
   let mut valid = 0;
 
   for line in input {
@@ -168,7 +199,8 @@ impl Passport {
   }
 }
 
-fn part2 (input: Vec<String>) -> u16 {
+#[aoc(day4, part2)]
+fn part2 (input: &[String]) -> u16 {
   let mut valid = 0;
 
   for line in input {
@@ -199,49 +231,21 @@ fn part2 (input: Vec<String>) -> u16 {
   valid
 }
 
-#[cfg(test)]
-mod tests {
-  use std::fs;
-  use super::*;
+aoc_test! {
+  input = "ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
+           byr:1937 iyr:2017 cid:147 hgt:183cm
 
-  fn read_input() -> Vec<String> {
-    let input = fs::read_to_string("input/04.txt").expect("Failed to read file");
-    let input: Vec<&str> = input.lines().collect();
+           iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884
+           hcl:#cfa07d byr:1929
 
+           hcl:#ae17e1 iyr:2013
+           eyr:2024
+           ecl:brn pid:760753108 byr:1931
+           hgt:179cm
 
-    // Separate passport records into discrete entries
-    let mut passports = Vec::new();
-    let mut passport = String::new();
-    for line in input {
-      if line.is_empty() {
-        passports.push(passport);
-        passport = String::new();
-        continue;
-      }
+           hcl:#cfa07d eyr:2025 pid:166559648
+           iyr:2011 ecl:brn hgt:59in";
 
-      passport.push_str(line);
-      // Add a space between lines. This will leave a trailing space in our strings, but makes the regex simpler
-      passport.push(' ');
-    }
-
-    // Push final passport
-    passports.push(passport);
-
-    passports
-  }
-
-  #[test]
-  fn test_day04_part1() {
-    let answer = part1(read_input());
-
-    println!("Part 1 Answer: {}", answer);
-  }
-
-
-  #[test]
-  fn test_day04_part2() {
-    let answer = part2(read_input());
-
-    println!("Part 2 Answer: {}", answer);
-  }
+  part1 = "2";
+  part2 = "2";
 }

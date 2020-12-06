@@ -1,3 +1,9 @@
+use aoc_runner_derive::aoc;
+use aoc_runner_derive::aoc_generator;
+use regex::{Regex, Match};
+
+use crate::aoc_test;
+
 #[derive(Debug)]
 struct PasswordPolicy {
   min: u8,
@@ -6,7 +12,44 @@ struct PasswordPolicy {
   password: String,
 }
 
-fn part1(policies: Vec<PasswordPolicy>) -> u16 {
+#[aoc_generator(day2)]
+fn generator(input: &str) -> Vec<PasswordPolicy> {
+  lazy_static! {
+    static ref RE: Regex = Regex::new(r"(\d+)-(\d+) (\w): (\w+)").expect("Failed to initialize regex");
+  }
+  let input = input.trim();
+
+  input.lines().map(|x| {
+    let caps = RE.captures(x).expect("Unable to parse input");
+
+    let min = parse_number(caps.get(1));
+    let max = parse_number(caps.get(2));
+    let letter = parse_char(caps.get(3));
+    let password = parse_string(caps.get(4));
+
+    PasswordPolicy {
+      min,
+      max,
+      letter,
+      password,
+    }
+  }).collect()
+}
+
+fn parse_number(input: Option<Match<>>) -> u8 {
+  input.expect("Missing input value").as_str().parse::<u8>().expect("Unable to parse number")
+}
+
+fn parse_char(input: Option<Match<>>) -> char {
+  input.expect("Missing input value").as_str().chars().next().expect("Unable to get char")
+}
+
+fn parse_string(input:  Option<Match<>>) -> String {
+  String::from(input.expect("Missing input value").as_str())
+}
+
+#[aoc(day2, part1)]
+fn part1(policies: &[PasswordPolicy]) -> u16 {
   let mut valid = 0;
 
   for policy in policies {
@@ -21,7 +64,8 @@ fn part1(policies: Vec<PasswordPolicy>) -> u16 {
   valid
 }
 
-fn part2(policies: Vec<PasswordPolicy>) -> u16 {
+#[aoc(day2, part2)]
+fn part2(policies: &[PasswordPolicy]) -> u16 {
   let mut valid = 0;
 
   for policy in policies {
@@ -40,60 +84,11 @@ fn char_at(s: &String, i: usize) -> char {
   s.chars().nth(i - 1).expect("Index out of bounds")
 }
 
-#[cfg(test)]
-mod tests {
-  use std::fs;
-  use regex::{Regex, Match};
-  use super::*;
+aoc_test!{
+  input = "1-3 a: abcde
+           1-3 b: cdefg
+           2-9 c: ccccccccc";
 
-  fn read_input() -> Vec<PasswordPolicy> {
-    lazy_static! {
-      static ref RE: Regex = Regex::new(r"(\d+)-(\d+) (\w): (\w+)").expect("Failed to initialize regex");
-    }
-
-    let input = fs::read_to_string("input/02.txt").expect("Failed to read file");
-    let input = input.trim_end();
-
-    input.lines().map(|x| {
-      let caps = RE.captures(x).expect("Unable to parse input");
-
-      let min = parse_number(caps.get(1));
-      let max = parse_number(caps.get(2));
-      let letter = parse_char(caps.get(3));
-      let password = parse_string(caps.get(4));
-
-      PasswordPolicy {
-        min,
-        max,
-        letter,
-        password,
-      }
-    }).collect()
-  }
-
-  fn parse_number(input: Option<Match<>>) -> u8 {
-    input.expect("Missing input value").as_str().parse::<u8>().expect("Unable to parse number")
-  }
-
-  fn parse_char(input: Option<Match<>>) -> char {
-    input.expect("Missing input value").as_str().chars().next().expect("Unable to get char")
-  }
-
-  fn parse_string(input:  Option<Match<>>) -> String {
-    String::from(input.expect("Missing input value").as_str())
-  }
-
-  #[test]
-  fn test_day02_part1() {
-    let answer = part1(read_input());
-
-    println!("Part 1 Answer: {}", answer);
-  }
-
-  #[test]
-  fn test_day02_part2() {
-    let answer = part2(read_input());
-
-    println!("Part 2 Answer: {}", answer);
-  }
+  part1 = "2";
+  part2 = "1";
 }

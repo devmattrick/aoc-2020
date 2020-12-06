@@ -1,3 +1,8 @@
+use aoc_runner_derive::aoc;
+use aoc_runner_derive::aoc_generator;
+
+use crate::aoc_test;
+
 #[derive(Copy, Clone)]
 enum Tile {
   Tree,
@@ -20,12 +25,38 @@ impl WrapGrid {
   }
 }
 
-fn part1(input: WrapGrid) -> u32 {
-  num_trees(&input, 3, 1)
+#[aoc_generator(day3)]
+fn generator(input: &str) -> WrapGrid {
+  let input: Vec<&str> = input.trim_end().lines().collect();
+
+  let width = input.get(0).expect("Missing first element").len();
+  let height = input.len();
+
+  let mut data = Vec::new();
+
+  for tile in input.join("").chars() {
+    data.push(match tile {
+      '#' => Tile::Tree,
+      '.' => Tile::Empty,
+      _ => panic!("Unrecognized character"),
+    })
+  }
+
+  WrapGrid {
+    data,
+    width,
+    height,
+  }
 }
 
-fn part2(input: WrapGrid) -> u32 {
-  num_trees(&input, 1, 1) * num_trees(&input, 3, 1) * num_trees(&input, 5, 1) * num_trees(&input, 7, 1) * num_trees(&input, 1, 2)
+#[aoc(day3, part1)]
+fn part1(input: &WrapGrid) -> u32 {
+  num_trees(input, 3, 1)
+}
+
+#[aoc(day3, part2)]
+fn part2(input: &WrapGrid) -> u32 {
+  num_trees(input, 1, 1) * num_trees(input, 3, 1) * num_trees(input, 5, 1) * num_trees(input, 7, 1) * num_trees(input, 1, 2)
 }
 
 fn num_trees(input: &WrapGrid, step_x: usize, step_y: usize) -> u32 {
@@ -47,46 +78,19 @@ fn num_trees(input: &WrapGrid, step_x: usize, step_y: usize) -> u32 {
   trees
 }
 
-#[cfg(test)]
-mod tests {
-  use std::fs;
-  use super::*;
+aoc_test! {
+  input = "..##.......
+           #...#...#..
+           .#....#..#.
+           ..#.#...#.#
+           .#...##..#.
+           ..#.##.....
+           .#.#.#....#
+           .#........#
+           #.##...#...
+           #...##....#
+           .#..#...#.#";
 
-  fn read_input() -> WrapGrid {
-    let input = fs::read_to_string("input/03.txt").expect("Failed to read file");
-    let input: Vec<&str> = input.trim_end().lines().collect();
-
-    let width = input.get(0).expect("Missing first element").len();
-    let height = input.len();
-
-    let mut data = Vec::new();
-
-    for tile in input.join("").chars() {
-      data.push(match tile {
-        '#' => Tile::Tree,
-        '.' => Tile::Empty,
-        _ => panic!("Unrecognized character"),
-      })
-    }
-
-    WrapGrid {
-      data,
-      width,
-      height,
-    }
-  }
-
-  #[test]
-  fn test_day03_part1() {
-    let answer = part1(read_input());
-
-    println!("Part 1 Answer: {}", answer);
-  }
-
-  #[test]
-  fn test_day03_part2() {
-    let answer = part2(read_input());
-
-    println!("Part 2 Answer: {}", answer);
-  }
+  part1 = "7";
+  part2 = "336";
 }
