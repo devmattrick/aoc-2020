@@ -52,21 +52,23 @@ fn part2(input: &[String]) -> u32 {
 }
 
 aoc_test!{
-  input = "abc
+  input = "
+    abc
 
-           a
-           b
-           c
+    a
+    b
+    c
 
-           ab
-           ac
+    ab
+    ac
 
-           a
-           a
-           a
-           a
+    a
+    a
+    a
+    a
 
-           b";
+    b
+  ";
 
   part1 = "11";
   part2 = "6";

@@ -85,9 +85,11 @@ fn char_at(s: &String, i: usize) -> char {
 }
 
 aoc_test!{
-  input = "1-3 a: abcde
-           1-3 b: cdefg
-           2-9 c: ccccccccc";
+  input = "
+    1-3 a: abcde
+    1-3 b: cdefg
+    2-9 c: ccccccccc
+  ";
 
   part1 = "2";
   part2 = "1";
