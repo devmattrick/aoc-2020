@@ -1,0 +1,15 @@
+  // Helpers
+  newline = _{ "\r\n" | "\n" }
+
+  // Primitive types
+  color = { ASCII_ALPHA+ ~ " " ~ ASCII_ALPHA+ }
+  number = { ASCII_DIGIT+ }
+
+  contents = { "no other bags" | bag_list }
+  bag_list = _{ (bag_list_item ~ (", " ~ bag_list_item)*) }
+  bag_list_item = _{ bag ~ " bag" ~ "s"? }
+  bag = { number ~ " " ~ color}
+
+  // Overall rules
+  rule = { color ~ " bags contain " ~ contents ~ "." }
+  input = { SOI ~ rule ~ newline? ~ EOI }
