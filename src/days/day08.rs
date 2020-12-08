@@ -157,7 +157,7 @@ fn part2(input: &CPU) -> i32 {
   input.acc
 }
 
-// Simple functiont to check if there's a loop in the program or not
+// Simple function to check if there's a loop in the program or not
 fn check_loop(input: &CPU) -> bool {
   let mut input = input.clone();
   let mut run = HashSet::new();
