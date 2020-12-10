@@ -71,7 +71,7 @@ impl Part2Solver {
     }
 
 
-    // Recursive case: for all "next" values between i + 1 to i + 3 (excluding them if they're out of bounds)
+    // Recursive case: for all "next" values between i + 1 to i + 3 (excluding any that are out of bounds)
     let mut answers = 0;
 
     let cloned = self.values.clone();
