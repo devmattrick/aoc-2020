@@ -1,6 +1,8 @@
-#[macro_use] extern crate lazy_static;
+#[macro_use]
+extern crate lazy_static;
 #[allow(unused_imports)]
-#[macro_use] extern crate aoc_runner_derive;
+#[macro_use]
+extern crate aoc_runner_derive;
 extern crate pest;
 #[macro_use]
 extern crate pest_derive;

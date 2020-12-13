@@ -7,37 +7,37 @@ const TARGET: u32 = 2020;
 
 #[aoc_generator(day1)]
 fn generator(input: &str) -> Vec<u32> {
-  let input = input.trim();
+    let input = input.trim();
 
-  input.lines().map(|x| x.parse::<u32>().unwrap()).collect()
+    input.lines().map(|x| x.parse::<u32>().unwrap()).collect()
 }
 
 #[aoc(day1, part1)]
 fn part1(input: &[u32]) -> u32 {
-  for x in input {
-    for y in input {
-      if x + y == TARGET {
-        return x * y;
-      }
+    for x in input {
+        for y in input {
+            if x + y == TARGET {
+                return x * y;
+            }
+        }
     }
-  }
 
-  return 0;
+    return 0;
 }
 
 #[aoc(day1, part2)]
 fn part2(input: &[u32]) -> u32 {
-  for x in input {
-    for y in input {
-      for z in input {
-        if x + y + z == TARGET {
-          return x * y * z;
+    for x in input {
+        for y in input {
+            for z in input {
+                if x + y + z == TARGET {
+                    return x * y * z;
+                }
+            }
         }
-      }
     }
-  }
 
-  return 0;
+    return 0;
 }
 
 aoc_test! {
