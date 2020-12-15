@@ -15,7 +15,7 @@ impl FromStr for Line {
             return Ok(Line::None);
         }
 
-        let n = s.parse::<u64>().map_err(|err| "Unable to parse number")?;
+        let n = s.parse::<u64>().map_err(|_| "Unable to parse number")?;
         Ok(Line::Bus(n))
     }
 }
