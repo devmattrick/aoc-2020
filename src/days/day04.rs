@@ -45,20 +45,20 @@ fn part1(input: &[String]) -> u16 {
     for line in input {
         // Since we only need to check for the existence of the fields for part 1, we use an 8-bit bitfield to keep track
         // of which fields exist for a given passport
-        let mut fields = 0x0000_0000;
+        let mut fields = 0b0000_0000;
 
         for cap in get_captures(&line) {
             let key = &cap[1];
 
             // Each field's existence is represented by a different bit
             match key {
-                "byr" => fields |= 0x0000_0001,
-                "iyr" => fields |= 0x0000_0010,
-                "eyr" => fields |= 0x0000_0100,
-                "hgt" => fields |= 0x0000_1000,
-                "hcl" => fields |= 0x0001_0000,
-                "ecl" => fields |= 0x0010_0000,
-                "pid" => fields |= 0x0100_0000,
+                "byr" => fields |= 0b0000_0001,
+                "iyr" => fields |= 0b0000_0010,
+                "eyr" => fields |= 0b0000_0100,
+                "hgt" => fields |= 0b0000_1000,
+                "hcl" => fields |= 0b0001_0000,
+                "ecl" => fields |= 0b0010_0000,
+                "pid" => fields |= 0b0100_0000,
                 "cid" => {} // This field doesn't matter
                 _ => panic!("Unknown key: {}", key),
             }
